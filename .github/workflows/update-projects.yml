@@ -1,0 +1,25 @@
+name: Update Projects
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update README Projects
+        uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          feed_list: "https://github.com/kadertheexpert.atom"
+          template: |
+            - [$title]($url)
