@@ -1,0 +1,139 @@
+name: Update Projects Grid
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+
+  update-projects:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      - name: Generate Projects Section
+        uses: actions/github-script@v7
+
+        with:
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          script: |
+
+            const fs = require("fs");
+
+            const username = "kadertheexpert";
+
+
+            const repos = await github.rest.repos.listForUser({
+
+              username: username,
+
+              sort: "updated",
+
+              per_page: 6
+
+            });
+
+
+            let projects = "";
+
+
+            repos.data.forEach(repo => {
+
+
+              if(repo.name === username) return;
+
+
+              projects += `
+
+<div align="center">
+
+### 🚀 ${repo.name}
+
+
+${repo.description || "A project by EasyX Lab"}
+
+
+⭐ ${repo.stargazers_count}
+
+💻 ${repo.language || "Various"}
+
+
+<a href="${repo.html_url}">
+View Repository →
+</a>
+
+
+</div>
+
+
+---
+
+
+`;
+
+            });
+
+
+
+            const file = fs.readFileSync("README.md","utf8");
+
+
+            const start = "<!-- PROJECTS:START -->";
+
+            const end = "<!-- PROJECTS:END -->";
+
+
+            const updated = file.replace(
+
+              new RegExp(
+                `${start}[\\s\\S]*?${end}`
+              ),
+
+              `${start}
+
+${projects}
+
+${end}`
+
+            );
+
+
+            fs.writeFileSync(
+
+              "README.md",
+
+              updated
+
+            );
+
+
+
+      - name: Commit Changes
+
+        run: |
+
+          git config user.name "github-actions"
+
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+
+          git commit -m "Update projects automatically" || exit 0
+
+          git push
