@@ -65,9 +65,11 @@ Currently focused on creating scalable software products.
 
 # 📦 Latest Projects
 
-<!-- BLOG-POST-LIST:START -->
 
-<!-- BLOG-POST-LIST:END -->
+<!-- PROJECTS:START -->
+
+
+<!-- PROJECTS:END -->
 
 
 ---
