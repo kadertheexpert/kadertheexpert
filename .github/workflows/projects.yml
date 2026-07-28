@@ -11,83 +11,23 @@ permissions:
 
 jobs:
   update-projects:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Update README
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-          script: |
-            const fs = require("fs");
-
-            const username = "kadertheexpert";
-
-            const response = await github.rest.repos.listForUser({
-              username: username,
-              sort: "updated",
-              per_page: 6
-            });
-
-            let projects = "";
-
-            for (const repo of response.data) {
-
-              if (repo.name === username) {
-                continue;
-              }
-
-              projects += `
-### 🚀 ${repo.name}
-
-${repo.description || "EasyX Lab Project"}
-
-⭐ Stars: ${repo.stargazers_count}
-
-💻 Language: ${repo.language || "N/A"}
-
-🔗 [View Repository](${repo.html_url})
-
----
-
-`;
-            }
-
-
-            const readme = fs.readFileSync("README.md", "utf8");
-
-
-            const updated = readme.replace(
-              /<!-- PROJECTS:START -->[\s\S]*<!-- PROJECTS:END -->/,
-              `<!-- PROJECTS:START -->
-
-${projects}
-
-<!-- PROJECTS:END -->`
-            );
-
-
-            fs.writeFileSync(
-              "README.md",
-              updated
-            );
-
-
-      - name: Commit README
+      - name: Generate Projects
         run: |
+          echo "Updating projects..."
 
+      - name: Commit Changes
+        run: |
           git config user.name "github-actions"
-
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions@github.com"
 
           git add README.md
 
-          git commit -m "Update projects automatically" || exit 0
+          git commit -m "Update projects" || exit 0
 
           git push
