@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:062925,100:3A9188&height=220&section=header&text=EasyX%20Lab&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=35"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:062925,100:3A9188&height=220&section=header&text=Md%20Abdul%20Kader&fontSize=58&fontColor=ffffff&animation=fadeIn&fontAlignY=38"/>
 
 # 👋 Hi, I'm Md Abdul Kader
 
